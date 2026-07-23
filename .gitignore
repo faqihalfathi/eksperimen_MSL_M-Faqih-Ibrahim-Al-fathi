@@ -31,8 +31,17 @@ Thumbs.db
 # Artifacts (generated during training)
 Membangun_model/artifacts/
 *.png
+!Monitoring dan Logging/**/*.png
 !Monitoring dan Logging/**/*.jpg
+!Membangun_model/*.jpg
 
 # Ignore Prometheus Binaries
 prometheus.zip
 Monitoring dan Logging/prometheus/
+
+# Helper scripts (not part of the project)
+grafana_setup.py
+grafana_alert_setup.py
+
+# MLflow database
+mlflow.db
