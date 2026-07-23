@@ -38,14 +38,14 @@ ARTIFACTS_DIR = os.path.join(os.path.dirname(__file__), 'artifacts')
 # DagsHub Configuration
 # Uncomment dan isi sesuai akun DagsHub Anda
 # ============================================================
-# import dagshub
-# dagshub.init(
-#     repo_owner='<your-dagshub-username>',
-#     repo_name='eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi',
-#     mlflow=True
-# )
-# MLFLOW_TRACKING_URI = 'https://dagshub.com/<your-dagshub-username>/eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi.mlflow'
-# mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+import dagshub
+dagshub.init(
+    repo_owner='faqihalfathi',
+    repo_name='eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi',
+    mlflow=True
+)
+MLFLOW_TRACKING_URI = 'https://dagshub.com/faqihalfathi/eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi.mlflow'
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
 
 def load_preprocessed_data():
@@ -216,12 +216,12 @@ def train_with_tuning():
     }
     
     rf_grid = GridSearchCV(
-        RandomForestRegressor(random_state=42, n_jobs=-1),
+        RandomForestRegressor(random_state=42, n_jobs=2),
         rf_param_grid,
         cv=3,
         scoring='neg_mean_squared_error',
         verbose=1,
-        n_jobs=-1
+        n_jobs=2
     )
     
     rf_grid.fit(X_train, y_train)
@@ -246,7 +246,7 @@ def train_with_tuning():
         cv=3,
         scoring='neg_mean_squared_error',
         verbose=1,
-        n_jobs=-1
+        n_jobs=2
     )
     
     gb_grid.fit(X_train, y_train)

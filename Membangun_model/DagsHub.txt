@@ -1,5 +1,5 @@
 DagsHub Repository Link:
-https://dagshub.com/<your-dagshub-username>/eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi
+https://dagshub.com/faqihalfathi/eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi
 
 Instruksi:
 1. Buat akun di https://dagshub.com

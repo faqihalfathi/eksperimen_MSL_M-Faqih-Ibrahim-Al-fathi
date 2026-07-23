@@ -32,3 +32,7 @@ Thumbs.db
 Membangun_model/artifacts/
 *.png
 !Monitoring dan Logging/**/*.jpg
+
+# Ignore Prometheus Binaries
+prometheus.zip
+Monitoring dan Logging/prometheus/
