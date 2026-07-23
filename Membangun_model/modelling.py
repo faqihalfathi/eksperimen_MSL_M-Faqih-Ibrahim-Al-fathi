@@ -51,7 +51,8 @@ def train_model():
     # Load data
     X_train, X_test, y_train, y_test = load_preprocessed_data()
     
-    # Set MLflow experiment
+    # Set MLflow tracking URI and experiment
+    mlflow.set_tracking_uri("sqlite:///mlflow.db")
     mlflow.set_experiment(EXPERIMENT_NAME)
     
     # Enable autolog

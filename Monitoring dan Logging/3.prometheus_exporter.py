@@ -46,7 +46,7 @@ model_info.info({'name': 'California Housing', 'version': '1.0'})
 
 start_time = time.time()
 model = None
-MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Membangun_model', 'mlruns', '0')
+MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Membangun_model', 'mlruns')
 
 def load_latest_model():
     global model
