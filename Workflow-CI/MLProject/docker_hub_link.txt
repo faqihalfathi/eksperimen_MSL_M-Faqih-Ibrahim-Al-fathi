@@ -1,0 +1,15 @@
+Docker Hub Image Link:
+https://hub.docker.com/r/<your-dockerhub-username>/california-housing-model
+
+Instruksi Build Docker:
+1. Pastikan MLflow dan Docker sudah terinstall
+2. Jalankan model training terlebih dahulu: mlflow run .
+3. Build Docker image:
+   mlflow models build-docker -m "runs:/<RUN_ID>/model" -n "california-housing-model"
+4. Push ke Docker Hub:
+   docker tag california-housing-model <your-dockerhub-username>/california-housing-model:latest
+   docker push <your-dockerhub-username>/california-housing-model:latest
+
+Catatan:
+- Ganti <your-dockerhub-username> dengan username Docker Hub Anda
+- Ganti <RUN_ID> dengan Run ID dari MLflow

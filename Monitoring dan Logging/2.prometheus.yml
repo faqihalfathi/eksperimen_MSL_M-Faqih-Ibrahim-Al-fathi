@@ -1,0 +1,25 @@
+# Prometheus Configuration - California Housing Model Monitoring
+# Nama: M. Faqih Ibrahim Al-fathi
+
+global:
+  scrape_interval: 15s     # Scrape setiap 15 detik
+  evaluation_interval: 15s # Evaluasi rules setiap 15 detik
+
+# Alertmanager configuration (opsional)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+scrape_configs:
+  # Job untuk scraping Prometheus itu sendiri
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Job untuk scraping model exporter
+  - job_name: "ml_model_exporter"
+    static_configs:
+      - targets: ["localhost:8000"]
+    scrape_interval: 10s
+    metrics_path: /metrics

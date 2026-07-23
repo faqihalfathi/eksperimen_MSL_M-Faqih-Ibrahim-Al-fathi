@@ -1,0 +1,9 @@
+DagsHub Repository Link:
+https://dagshub.com/<your-dagshub-username>/eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi
+
+Instruksi:
+1. Buat akun di https://dagshub.com
+2. Buat repository baru dengan nama: eksperimen_MSL_M-Faqih-Ibrahim-Al-fathi
+3. Connect repository GitHub ke DagsHub
+4. Update link di atas dengan username DagsHub Anda
+5. Update konfigurasi DagsHub di modelling_tuning.py (uncomment dan isi username)

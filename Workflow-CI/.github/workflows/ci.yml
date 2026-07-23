@@ -1,0 +1,79 @@
+name: CI Pipeline - Model Training & Docker Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Workflow-CI/**'
+  workflow_dispatch:
+
+env:
+  DOCKER_IMAGE_NAME: california-housing-model
+
+jobs:
+  train-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: '3.10'
+          activate-environment: mlproject-env
+
+      - name: Install dependencies
+        run: |
+          pip install mlflow pandas numpy scikit-learn matplotlib joblib
+
+      - name: Run MLflow Project
+        working-directory: Workflow-CI/MLProject
+        run: |
+          mlflow run . --env-manager=local 2>&1 | tee mlflow_output.log
+          echo "RUN_ID=$(grep -oP 'Run with UUID \K\S+' mlflow_output.log || mlflow runs list --experiment-id 0 | head -3 | tail -1 | awk '{print $4}')" >> $GITHUB_ENV
+
+      - name: Upload MLflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlflow-artifacts
+          path: |
+            Workflow-CI/MLProject/mlruns/
+            Workflow-CI/MLProject/*.png
+            Workflow-CI/MLProject/*.json
+          retention-days: 30
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Image with MLflow
+        working-directory: Workflow-CI/MLProject
+        run: |
+          # Cari run ID terbaru
+          LATEST_RUN=$(ls -t mlruns/0/ | head -1)
+          if [ -d "mlruns/0/$LATEST_RUN/artifacts/model" ]; then
+            mlflow models build-docker -m "mlruns/0/$LATEST_RUN/artifacts/model" -n "$DOCKER_IMAGE_NAME" --enable-mlserver
+          else
+            echo "Model artifacts not found, skipping Docker build"
+            exit 0
+          fi
+
+      - name: Push Docker Image
+        run: |
+          docker tag $DOCKER_IMAGE_NAME ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:latest
+          docker tag $DOCKER_IMAGE_NAME ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:${{ github.sha }}
