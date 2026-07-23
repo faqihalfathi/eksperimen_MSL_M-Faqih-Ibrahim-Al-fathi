@@ -55,7 +55,7 @@ def train_model():
     mlflow.set_experiment(EXPERIMENT_NAME)
     
     # Enable autolog
-    mlflow.sklearn.autolog()
+    mlflow.sklearn.autolog(log_models=True)
     
     with mlflow.start_run(run_name="RandomForest_Autolog"):
         # Train model
