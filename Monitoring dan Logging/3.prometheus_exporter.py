@@ -125,4 +125,4 @@ def metrics():
 if __name__ == "__main__":
     import uvicorn
     print("[INFO] Starting FastAPI on port 8000...")
-    uvicorn.run("3.prometheus_exporter:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
